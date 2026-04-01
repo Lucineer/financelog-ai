@@ -196,9 +196,9 @@ export default {
       });
     }
 
-    // Serve static HTML at root
+    // Serve inline HTML
     if (url.pathname === '/' || url.pathname === '/app.html') {
-      return env.ASSETS?.fetch(request) ?? fetch(new URL('/app.html', url.origin));
+      return new Response(getAppHTML(), { headers: { 'Content-Type': 'text/html' } });
     }
 
     // API routes
