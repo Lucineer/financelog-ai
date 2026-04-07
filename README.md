@@ -1,55 +1,49 @@
-# financelog.ai
+# financelog-ai — Your Self-Hosted Financial Assistant
 
-Personal finance vessel — track transactions, budgets, savings goals, and investments with an AI advisor. Built on Cloudflare Workers.
+You don't need another finance app that sells your data. You need one you control.
 
-## Stack
+Most financial AI tools lock you in, charge subscriptions, and operate as black boxes. This runs entirely on your infrastructure, communicates only with the LLM you provide, and never shares your data with any third party. Built for people who prefer transparency with their finances.
 
-- **Runtime:** Cloudflare Workers (TypeScript)
-- **Frontend:** Single-page HTML + vanilla JS (no build step)
-- **AI:** DeepSeek chat via SSE streaming
-- **Storage:** In-memory (swap to KV/D1 for persistence)
+A single-file AI agent for financial conversations. Part of the Cocapn Fleet.
 
-## Project structure
+**Live Demo:** https://financelog-ai.casey-digennaro.workers.dev
 
-```
-src/
-  index.ts              Worker entry — all API routes
-  finance/
-    tracker.ts          TransactionLog, BudgetManager, GoalTracker, InvestmentPortfolio, FinancialInsights
-public/
-  app.html              Finance dashboard UI
-```
+---
 
-## API
+## What it does
+- Discuss budgets, investments, or plans with an AI using only the data you provide during the chat
+- All processing occurs within your Cloudflare Worker—no external data storage
+- Simple interface that works across devices
+- You can audit and modify every line of the single source file
 
-| Endpoint | Methods | Description |
-|---|---|---|
-| `POST /api/chat` | POST | SSE chat with DeepSeek financial advisor |
-| `/api/transactions` | GET, POST, DELETE | Transaction log (amount, category, date, note) |
-| `/api/budget` | GET, POST | Monthly budgets by category |
-| `/api/goals` | GET, POST, DELETE | Savings goals with progress tracking |
-| `/api/investments` | GET, POST | Portfolio holdings (buy/sell/update price) |
-| `/api/insights` | GET | Spending patterns, savings rate, net worth |
+## How it's different
+- No accounts, tracking, or analytics. Your financial data never leaves your infrastructure.
+- You host it, removing any intermediary server between you and your LLM provider.
+- Zero dependencies. One TypeScript file minimizes supply chain risk.
+- Fork-first approach. This is a starting point you adapt, not a product you wait on.
+
+**Limitation:** The agent is stateless by default—your conversation history and financial details exist only for the duration of your current chat session. You can implement persistence using Cloudflare KV if needed.
 
 ## Quick start
+1. **Fork** this repository
+2. **Deploy** to Cloudflare Workers: `npx wrangler deploy`
+3. **Set your LLM key** as a secret in the Cloudflare dashboard
 
-```bash
-npm install
-npx wrangler dev
-```
+The agent supports DeepSeek, Moonshot, DeepInfra, and SiliconFlow. Add your key as `DEEPSEEK_API_KEY`, `MOONSHOT_API_KEY`, `DEEPINFRA_API_KEY`, or `SILICONFLOW_API_KEY` via Settings → Variables in your Worker dashboard.
 
-Set your DeepSeek API key in `wrangler.toml` or via `wrangler secret put DEEPSEEK_API_KEY`.
+Standard Fleet endpoints are included: `/health`, `/setup`, `/api/chat`, `/api/seed`.
 
-## Deploy
-
-```bash
-npx wrangler deploy
-```
-
-## Author
-
-Superinstance
+## Contributions
+This is a Fleet vessel. Fork it, adapt it to your needs, and share improvements via pull requests.
 
 ## License
+MIT License.
 
-MIT — Built with ❤️ by [Superinstance](https://github.com/superinstance) & [Lucineer](https://github.com/Lucineer) (DiGennaro et al.)
+Superinstance & Lucineer (DiGennaro et al.).
+
+---
+
+<div>
+  <a href="https://the-fleet.casey-digennaro.workers.dev">Fleet</a> · 
+  <a href="https://cocapn.ai">Cocapn</a>
+</div>
